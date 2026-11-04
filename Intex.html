@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עוזר הטארוט החתולי המסתורי 🐾🔮</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Rubik:ital,wght@0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        mystic: {
+                            950: '#0b0614',
+                            900: '#140c24',
+                            800: '#23143c',
+                            700: '#381f5e',
+                            gold: '#ffd700',
+                            purple: '#a855f7',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Assistant', 'sans-serif'],
+                        heading: ['Rubik', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at top center, #24113e 0%, #0d0617 100%);
+            background-attachment: fixed;
+            color: #f3f4f6;
+            font-family: 'Assistant', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Glassmorphic Cards */
+        .glass-card {
+            background: rgba(26, 15, 46, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card-amber {
+            background: rgba(43, 24, 16, 0.65);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Custom Glow Effects */
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+        }
+
+        .glow-gold {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 12, 36, 0.5);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(168, 85, 247, 0.4);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.6);
+        }
+
+        /* Topic Button Active State Animations */
+        .topic-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .topic-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Custom Pulse for Scanner Effect */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .animate-scan {
+            animation: scanline 2s infinite linear;
+        }
+    </style>
+</head>
+<body class="p-3 md:p-6 flex flex-col justify-between items-center text-gray-100 min-h-screen">
+
+    <div class="max-w-4xl mx-auto w-full space-y-4">
+        
+        <!-- Header -->
+        <header class="text-center py-3.5 glass-card rounded-2xl p-4 glow-purple relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex items-center justify-center gap-2 mb-1">
+                <i class="fa-solid text-amber-400 text-2xl fa-cat animate-bounce"></i>
+                <h1 class="text-xl md:text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-purple-300 to-pink-400 font-heading">
+                    עוזר הטארוט החתולי המסתורי 🐾🔮
+                </h1>
+            </div>
+            <p class="text-gray-300 text-xs md:text-sm max-w-lg mx-auto font-medium">
+                העלה או צלם תמונה של הקלפים, בחר נושא – והחתול המכשף יזהה את הקלפים ויספק לך תסריט עוקצני ומצחיק!
+            </p>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
+            <!-- Controls Column -->
+            <div class="md:col-span-6 space-y-3">
+                
+                <!-- Topic Selection -->
+                <div class="glass-card p-3.5 rounded-2xl space-y-2.5">
+                    <label class="block text-amber-300 font-bold text-xs md:text-sm flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-compass text-purple-400"></i>
+                            1. בחר נושא לקריאה:
+                        </span>
+                        <span id="selectedTopicBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-normal">זוגיות ואהבה</span>
+                    </label>
+                    <div class="grid grid-cols-3 gap-2" id="topicsGrid">
+                        <button type="button" onclick="selectTopic('זוגיות ואהבה')" class="topic-btn p-2.5 rounded-xl border border-purple-500/30 bg-mystic-900/60 hover:bg-purple-800/40 transition flex flex-col items-center justify-center gap-1 text-xs font-medium text-purple-200">
+                            <i class="fa-solid fa-heart text-pink-400 text-base"></i>
+                            <span>זוגיות</span>
+                        </button>
+                        <button type="button" onclick="selectTopic('פרנסה וכסף')" class="topic-btn p-2.5 rounded-xl border border-purple-500/30 bg-mystic-900/60 hover:bg-purple-800/40 transition flex flex-col items-center justify-center gap-1 text-xs font-medium text-purple-200">
+                            <i class="fa-solid fa-coins text-amber-400 text-base"></i>
+                            <span>פרנסה</span>
+                        </button>
+                        <button type="button" onclick="selectTopic('קריירה ועבודה')" class="topic-btn p-2.5 rounded-xl border border-purple-500/30 bg-mystic-900/60 hover:bg-purple-800/40 transition flex flex-col items-center justify-center gap-1 text-xs font-medium text-purple-200">
+                            <i class="fa-solid fa-briefcase text-blue-400 text-base"></i>
+                            <span>קריירה</span>
+                        </button>
+                        <button type="button" onclick="selectTopic('משפחה ויחסים')" class="topic-btn p-2.5 rounded-xl border border-purple-500/30 bg-mystic-900/60 hover:bg-purple-800/40 transition flex flex-col items-center justify-center gap-1 text-xs font-medium text-purple-200">
+                            <i class="fa-solid fa-people-roof text-emerald-400 text-base"></i>
+                            <span>משפחה</span>
+                        </button>
+                        <button type="button" onclick="selectTopic('חברים וחברה')" class="topic-btn p-2.5 rounded-xl border border-purple-500/30 bg-mystic-900/60 hover:bg-purple-800/40 transition flex flex-col items-center justify-center gap-1 text-xs font-medium text-purple-200">
+                            <i class="fa-solid fa-user-group text-cyan-400 text-base"></i>
+                            <span>חברים</span>
+                        </button>
+                        <button type="button" onclick="selectTopic('כללי והתפתחות')" class="topic-btn p-2.5 rounded-xl border border-purple-500/30 bg-mystic-900/60 hover:bg-purple-800/40 transition flex flex-col items-center justify-center gap-1 text-xs font-medium text-purple-200">
+                            <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-base"></i>
+                            <span>כללי</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Image Upload / Camera Box -->
+                <div class="glass-card p-3.5 rounded-2xl space-y-2.5">
+                    <label class="block text-amber-300 font-bold text-xs md:text-sm flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-camera text-purple-400"></i>
+                            2. צלם/העלה תמונה של הקלפים:
+                        </span>
+                        <span class="text-[10px] text-gray-400 font-normal">זיהוי קלפים אוטומטי</span>
+                    </label>
+                    
+                    <div class="border-2 border-dashed border-purple-500/40 rounded-xl p-4 text-center hover:border-amber-400/80 transition cursor-pointer relative bg-mystic-950/40 focus-within:ring-2 focus-within:ring-amber-400 group overflow-hidden" id="dropArea">
+                        <input type="file" id="imageInput" accept="image/*" capture="environment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        
+                        <div id="uploadPrompt" class="space-y-2 py-2">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-purple-900/40 border border-purple-500/40 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                                <i class="fa-solid fa-camera-retro text-xl text-amber-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-gray-200">לחץ לצילום במצלמה או לבחירת תמונה</p>
+                                <p class="text-[11px] text-purple-300 mt-0.5">המערכת מזהה אוטומטית 1, 3, 5 או כל כמות קלפים</p>
+                            </div>
+                        </div>
+
+                        <div id="imagePreviewContainer" class="hidden relative z-20">
+                            <img id="imagePreview" src="" alt="תצוגה מקדימה" class="max-h-48 mx-auto rounded-lg shadow-lg border border-amber-400/40 object-contain">
+                            <button type="button" onclick="resetImage(event)" aria-label="הסר תמונה" class="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full text-xs transition shadow-lg flex items-center justify-center border border-white/20">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optional Context / Notes -->
+                <div class="glass-card p-3 rounded-2xl space-y-1.5">
+                    <label for="extraNotes" class="block text-amber-300 font-bold text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-comment-dots text-purple-400"></i>
+                        הערות נוספות/רקע שאתה רוצה לציין (אופציונלי):
+                    </label>
+                    <textarea id="extraNotes" rows="2" placeholder="למשל: המשתמש שואל אם כדאי לעבור עבודה השבוע..." class="w-full bg-mystic-950/80 border border-purple-500/30 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-amber-400 transition placeholder-gray-500 resize-none"></textarea>
+                </div>
+
+                <!-- Analyze Button -->
+                <button id="analyzeBtn" onclick="analyzeReading()" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 via-purple-600 to-pink-600 text-white font-extrabold text-sm md:text-base shadow-lg hover:opacity-95 active:scale-[0.99] transition flex items-center justify-center gap-2 font-heading glow-gold">
+                    <i class="fa-solid fa-paw text-base"></i>
+                    פענח קלפים וצור תסריט
+                </button>
+
+            </div>
+
+            <!-- Result Display Column -->
+            <div class="md:col-span-6 flex flex-col">
+                <div class="glass-card p-4 rounded-2xl flex-1 flex flex-col justify-between border border-purple-500/30 relative overflow-hidden min-h-[380px]">
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b border-purple-500/20 pb-2.5">
+                            <h2 class="text-sm md:text-base font-bold text-amber-300 flex items-center gap-2 font-heading">
+                                <i class="fa-solid fa-scroll text-purple-400"></i>
+                                תוצאת הניתוח ותסריט הקריאה
+                            </h2>
+                            <span id="statusBadge" class="text-[10px] px-2.5 py-1 rounded-full bg-mystic-900 border border-purple-500/30 text-gray-400">ממתין לקלט</span>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="loadingState" class="hidden py-12 text-center space-y-4">
+                            <div class="relative w-16 h-16 mx-auto">
+                                <div class="absolute inset-0 rounded-full border-4 border-purple-500/20 border-t-amber-400 animate-spin"></div>
+                                <i class="fa-solid fa-cat absolute inset-0 m-auto text-amber-400 text-xl animate-pulse"></i>
+                            </div>
+                            <div>
+                                <p class="text-amber-300 font-bold text-sm animate-pulse">החתול המכשף מביט מקרוב בקלפים...</p>
+                                <p class="text-gray-400 text-xs mt-1">מזהה קלפים ומכין ניתוח עוקצני ושנון</p>
+                            </div>
+                        </div>
+
+                        <!-- Output Content Container -->
+                        <div id="outputContent" class="text-xs md:text-sm text-gray-200 space-y-3 leading-relaxed max-h-[460px] overflow-y-auto pr-1">
+                            <div class="text-center py-12 space-y-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-3xl text-purple-500/40"></i>
+                                <p class="text-gray-400 text-xs italic">
+                                    העלה תמונה של קלפי הטארוט, בחר נושא ולחץ על "פענח קלפים" לקבלת התסריט המוכן.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div id="outputActions" class="hidden pt-3 border-t border-purple-500/20 flex gap-2">
+                        <button onclick="copyToClipboard()" class="flex-1 py-2.5 bg-purple-900/60 hover:bg-purple-800 text-amber-300 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-purple-500/40 hover:glow-purple">
+                            <i class="fa-solid fa-copy text-sm"></i>
+                            העתק תסריט קריאה
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script Logic -->
+    <script>
+        let selectedTopic = 'זוגיות ואהבה';
+        let imageBase64 = null;
+        let imageMimeType = 'image/jpeg';
+
+        /* =========================================================================
+           מאגר המידע והפירושים של הקלפים החתוליים שלך!
+           תוכל להוסיף ולהרחיב כאן את כל הפירושים הייחודיים של החפיסה שלך.
+           ========================================================================= */
+        const TAROT_KNOWLEDGE_BASE = `
+--- מאגר המידע המלא של קלפי הטארוט החתוליים ---
+1. השוטה (The Fool / Catnip Adventurer):
+   - סמל: חתול שקופץ באומץ (או בטפשות) אחרי פרפר מהחלון.
+   - פירוש: התחלה חדשה, תמימות, סיכון ללא מחשבה, התרעננות.
+   - עוקץ חתולי: "אתה עומד לקפוץ ראש לתוך קופסה בלי לבדוק אם יש שם סרטן."
+
+2. הקוסם (The Magician / The Paws of Destiny):
+   - סמל: חתול שמפיל כוס מהשולחן בעזרת כף רגל אחת בביטחון מלא.
+   - פירוש: שליטה במצב, יזמות, קסם אישי, היכולת ליצור יש מאין.
+   - עוקץ חתולי: "יש לך את כל הכלים בידיים, אתה פשוט עצלן מדי לקום מהשטיח."
+
+3. הקיסרית (The Empress / The Purring Queen):
+   - סמל: חתולה מפוארת שקועה בכרית קטיפה עם קערת שמנת.
+   - פירוש: שפע, טיפוח, יצירתיות, נשיות, פינוק עצמי.
+   - עוקץ חתולי: "זמן להפסיק להתפשר על אוכל יבש ולדרוש את השמנת שמגיעה לך."
+
+4. המגדל (The Tower / The Scratching Post Collapse):
+   - סמל: מתקן הגירוד הגבוה לקס שקרס פתאום.
+   - פירוש: שינוי פתאומי, הרס אשליות, שינוי מבני כפוי.
+   - עוקץ חתולי: "הכל התפרק? מצוין. עכשיו אפשר לבנות מתקן חדש וגבוה יותר."
+
+5. עשר חרבות (Ten of Swords / The Vet Visit):
+   - סמל: חתול במנשא בדרך לווטרינר, בטוח שזה סוף העולם.
+   - פירוש: דרמה מוגזמת, תחושת קורבנות, סוף של תקופה קשה, תחתית המדרגה.
+   - עוקץ חתולי: "די לדרמה. אתה לא מת, זו סתם זריקה קטנה."
+
+[הערה: תוכל להמשיך להוסיף כאן את כל שאר הקלפים בפורמט הזה!]
+`;
+
+        window.onload = function() {
+            selectTopic(selectedTopic);
+        };
+
+        function selectTopic(topic) {
+            selectedTopic = topic;
+            document.getElementById('selectedTopicBadge').innerText = topic;
+
+            document.querySelectorAll('.topic-btn').forEach(btn => {
+                if (btn.innerText.includes(topic.split(' ')[0])) {
+                    btn.classList.add('border-amber-400', 'bg-purple-800/80', 'text-amber-200', 'glow-purple');
+                    btn.classList.remove('border-purple-500/30', 'bg-mystic-900/60', 'text-purple-200');
+                } else {
+                    btn.classList.remove('border-amber-400', 'bg-purple-800/80', 'text-amber-200', 'glow-purple');
+                    btn.classList.add('border-purple-500/30', 'bg-mystic-900/60', 'text-purple-200');
+                }
+            });
+        }
+
+        // Image Handling & Automatic Compression to prevent high-res mobile camera upload failures
+        const imageInput = document.getElementById('imageInput');
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            imageMimeType = file.type || 'image/jpeg';
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 1200;
+
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                    imageBase64 = compressedDataUrl.split(',')[1];
+                    imageMimeType = 'image/jpeg';
+
+                    document.getElementById('imagePreview').src = compressedDataUrl;
+                    document.getElementById('uploadPrompt').classList.add('hidden');
+                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function resetImage(e) {
+            e.stopPropagation();
+            imageBase64 = null;
+            imageMimeType = 'image/jpeg';
+            imageInput.value = '';
+            document.getElementById('uploadPrompt').classList.remove('hidden');
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+        }
+
+        async function analyzeReading() {
+            if (!imageBase64) {
+                showToast("אנא העלה תמונה של הקלפים תחילה!", "warning");
+                return;
+            }
+
+            const extraNotes = document.getElementById('extraNotes').value.trim();
+            const loadingState = document.getElementById('loadingState');
+            const outputContent = document.getElementById('outputContent');
+            const statusBadge = document.getElementById('statusBadge');
+            const outputActions = document.getElementById('outputActions');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+
+            analyzeBtn.disabled = true;
+            analyzeBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            loadingState.classList.remove('hidden');
+            outputContent.innerHTML = '';
+            outputActions.classList.add('hidden');
+            statusBadge.innerText = 'מפענח...';
+            statusBadge.className = 'text-[10px] px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse';
+
+            const systemPrompt = `אתה עוזר לקורא בקלפי טארוט. האישיות שלך היא חתול מכשף מבריק, עוקצני, שנון, מצחיק וציני.
+יש לך גישה ישירה לכל מאגר המידע המופרט של הקלפים החתוליים להלן:
+${TAROT_KNOWLEDGE_BASE}
+
+תפקידך:
+1. לסרוק את התמונה ולזהות בדיוק כמה קלפים מופיעים בה ומהם שמות הקלפים (מתוך מאגר המידע או טארוט קלאסי).
+2. להסתמך **אך ורק** על המידע והפירושים מתוך מאגר המידע שסופק לך למעלה!
+3. להתאים את הניתוח לנושא שנבחר: "${selectedTopic}".
+${extraNotes ? 'רקע/הערות מהמשתמש: ' + extraNotes : ''}
+
+הנחיות קשיחות למבנה הפלט (Markdown):
+1. **פתיחה חתולית עוקצנית**: משפט ציני חתולי קצר.
+2. **זיהוי הקלפים בתמונה**: כמות הקלפים ושמותיהם.
+3. **פירוט הקלפים מתוך המאגר**: פירוש ועוקץ חתולי לכל קלף שנזכר.
+4. **תסריט מוכן להקראה למשתמש**: קטע דיבור רציף, מצחיק, שנון, עוקצני ומלא אנלוגיות מעולם החתולים (סיר בשר, ציפורניים, קופסאות קרטון, תנומות, שריטות, גרגורים) שנותן תשובה עמוקה ומדויקת בנושא ${selectedTopic}.`;
+
+            const userQuery = `זהה את הקלפים בתמונה ותן לי ניתוח ותסריט קריאה עוקצני ומצחיק בנושא ${selectedTopic}.`;
+
+            try {
+                const apiKey = ""; // API key automatically injected in runtime environment
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [
+                        {
+                            role: "user",
+                            parts: [
+                                { text: userQuery },
+                                {
+                                    inlineData: {
+                                        mimeType: imageMimeType,
+                                        data: imageBase64
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`שגיאת תקשורת (${response.status})`);
+                }
+
+                const result = await response.json();
+                loadingState.classList.add('hidden');
+
+                if (result.candidates && result.candidates[0]?.content?.parts?.[0]?.text) {
+                    const responseText = result.candidates[0].content.parts[0].text;
+                    outputContent.innerHTML = formatMarkdown(responseText);
+                    outputActions.classList.remove('hidden');
+                    statusBadge.innerText = 'הושלם!';
+                    statusBadge.className = 'text-[10px] px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                } else {
+                    throw new Error("לא התקבלה תשובה מהמודל");
+                }
+
+            } catch (error) {
+                console.error("Analysis error:", error);
+                loadingState.classList.add('hidden');
+                outputContent.innerHTML = `
+                <div class="p-3.5 bg-red-950/60 border border-red-500/40 rounded-xl text-red-200 space-y-1 text-xs">
+                    <p class="font-bold text-amber-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-triangle-exclamation text-red-400"></i>
+                        אופס! החתול הפיל את הקלפים מהשולחן... 🐾
+                    </p>
+                    <p class="text-gray-300">אירעה שגיאה בזיהוי התמונה. אנא ודא שהתמונה ברורה, מוארת היטב ונסה לצלם שוב.</p>
+                </div>`;
+                statusBadge.innerText = 'שגיאה';
+                statusBadge.className = 'text-[10px] px-2.5 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/40';
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function formatMarkdown(text) {
+            let html = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong class="text-amber-300 font-bold">$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em class="text-purple-200">$1</em>')
+                .replace(/^### (.*$)/gim, '<h3 class="text-xs font-bold text-amber-400 mt-2 mb-1 font-heading">$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2 class="text-sm font-bold text-purple-300 mt-3 mb-1 font-heading border-b border-purple-500/20 pb-1">$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1 class="text-base font-bold text-pink-400 mt-3 mb-1 font-heading">$1</h1>')
+                .replace(/^\- (.*$)/gim, '<div class="flex items-start gap-1.5 my-1 text-gray-300"><span class="text-amber-400">•</span><span>$1</span></div>')
+                .replace(/\n\n/g, '<div class="h-2"></div>')
+                .replace(/\n/g, '<br>');
+            return html;
+        }
+
+        function copyToClipboard() {
+            const contentText = document.getElementById('outputContent').innerText;
+            
+            const tempInput = document.createElement('textarea');
+            tempInput.value = contentText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast("תסריט הקריאה הועתק בהצלחה!", "success");
+        }
+
+        function showToast(msg, type) {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-5 left-1/2 transform -translate-x-1/2 px-4 py-2.5 rounded-xl text-xs font-bold text-white shadow-2xl z-50 transition-all duration-300 border ${type === 'warning' ? 'bg-amber-600 border-amber-400' : 'bg-emerald-600 border-emerald-400'}`;
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
